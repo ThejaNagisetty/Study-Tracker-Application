@@ -1,0 +1,57 @@
+<div class="container dropDownDiv">
+  Select Study ID
+  <select class="form-control col-xs-3 col-sm-3" id="selectedStudy"
+                  required
+                  [(ngModel)]="selectedStudy" name="selectedStudy"
+                  (change)="getStudyDetails()"
+                  >
+            <option *ngFor="let study of studies" [value]="study">{{study}}</option>
+          </select>
+    <div [hidden]="submitted" *ngIf="showForm">
+      <h1>Edit study details</h1>
+
+
+      <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+        <div class="form-group row" *ngFor="let item of featuresToShow | keyvalue; let i = index">
+          <label class="col-sm-3">{{item.key}}</label>
+          <input type="text" class="form-control col-sm-3" [id]="inputId(item.value, 0)"
+                 
+                 [ngModel] = "getInformation(item.value, 0)"
+                 (ngModelChange) = "setInformation($event, item.value, 0)"
+                 [name]="inputId(item.value, 0)"
+                >
+          <input type="text" class="form-control col-sm-3" [id]="inputId(item.value, 1)"
+                
+                [ngModel] = "getInformation(item.value, 1)"
+                (ngModelChange) = "setInformation($event, item.value, 1)"
+                [name]="inputId(item.value, 1)"
+               >
+          <!-- <div [hidden]="name.valid || name.pristine"
+               class="alert alert-danger" model.name>
+            Name is required
+          </div> -->
+        </div>
+  
+       
+  
+        <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
+        <!-- <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button> -->
+      </form>
+    </div>
+  
+    <div [hidden]="!submitted" *ngIf="showForm" class="studyDetailsDisplay">
+      <h2 class="title">Study Data</h2>
+      <div class="row tableHeader">
+        <div class="col-xs-4 col-sm-4 header">{{selectedStudy}}</div>
+        <div class="col-xs-4 col-sm-4 header">Created</div>
+        <div class="col-xs-4 col-sm-4 header">Status</div>
+      </div>
+      <div class="row detailsRow" *ngFor="let item of featuresToShow | keyvalue">
+        <div class="col-xs-4 col-sm-4">{{item.key}}</div>
+        <div class="col-xs-4 col-sm-4">{{ getInformation(item.value, 0) }}</div>
+        <div class="col-xs-4 col-sm-4">{{ getInformation(item.value, 1) }}</div>
+      </div>
+      <br>
+      <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+    </div> 
+  </div>
